@@ -1,0 +1,49 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-title>Música</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <button *ngIf="!isLoged()" ion-button block (click)="login()">Login</button>
+
+    <div *ngIf="isLoged()">
+
+        <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+        <ion-segment [(ngModel)]="typeSearch" (ionChange)="segmentChanged($event)">
+            <ion-segment-button value="track">
+                Canción
+            </ion-segment-button>
+            <ion-segment-button value="album">
+                Álbum
+            </ion-segment-button>
+            <ion-segment-button value="artist">
+                Artista
+            </ion-segment-button>
+        </ion-segment>
+
+        <h2 padding *ngIf="total">Total resultados: {{ total }}</h2>
+        <ion-list>
+            <ion-item *ngFor="let item of listSearch; let i = index" data-id="{{ item.id }}" (click)="action(i, item)">
+                <ion-avatar *ngIf="item.album" item-start>
+                    <img src="{{ item.album.images[2].url }}">
+                </ion-avatar>
+                <ion-avatar *ngIf="item.images && item.images.length > 0" item-start>
+                    <img src="{{ item.images[2].url }}">
+                </ion-avatar>
+                <ion-avatar *ngIf="item.images && item.images.length === 0" item-start>
+                    <img src="http://www.edmilenio.com/media/wysiwyg/no-image.png">
+                </ion-avatar>
+                {{ item.name }}
+                <ion-icon *ngIf="currentTrack && currentTrack.id === item.id" name="musical-note" item-end></ion-icon>
+            </ion-item>
+        </ion-list>
+
+        <ion-infinite-scroll *ngIf="limit + offset < total" (ionInfinite)="doInfinite($event)">
+            <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+
+    </div>
+
+</ion-content>

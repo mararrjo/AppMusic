@@ -1,0 +1,36 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>{{ itemDetail.name }}</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-list>
+
+        <ion-list-header color="light">
+            Datos:
+        </ion-list-header>
+
+        <ion-item *ngIf="itemDetail.images && itemDetail.images.length > 0">
+            <img src="{{ itemDetail.images[2].url }}">
+        </ion-item>
+        <ion-item>Tipo: {{ itemDetail.type }}</ion-item>
+        <ion-item>Nombre: {{ itemDetail.name }}</ion-item>
+    </ion-list>
+
+    <ion-list>
+        <ion-list-header color="light">
+            <span *ngIf="itemDetail.type === 'album'">Canciones:</span>
+            <span *ngIf="itemDetail.type === 'artist'">Álbumes:</span>
+        </ion-list-header>
+        <ion-item *ngFor="let item of items" (click)="action(i, item)">
+            <ion-avatar *ngIf="item.images && item.images.length > 0" item-start>
+                <img src="{{ item.images[2].url }}">
+            </ion-avatar>
+            {{ item.name }}
+            <ion-icon *ngIf="currentTrack && currentTrack.id === item.id" name="musical-note" item-end></ion-icon>
+        </ion-item>
+    </ion-list>
+
+</ion-content>
